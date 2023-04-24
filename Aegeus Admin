@@ -1,0 +1,556 @@
+local status = true
+local player = game:GetService("Players").LocalPlayer.Name
+
+local function getrealname(display)
+    local players = game:GetService("Players")
+    for _, Child in ipairs(players:GetChildren()) do
+        if Child.DisplayName == display then
+            local name = Child.Name
+            return name
+        end
+    end
+end
+
+local function getclan(user)
+        local parties = game:GetService("ReplicatedStorage").PartysHolder
+        for _, Child in ipairs(parties:GetChildren()) do
+            if Child.Party_Leader.Value == user then
+                local code = Child.Name
+                return code
+            elseif Child.Party_Leader.Value == getrealname(user) then
+                local code = Child.Name
+                return code
+            end
+            local people = Child.Players:GetChildren()
+            for _,  Child in ipairs(people) do
+                if Child.Name == user then
+                    local code = Child.Parent.Parent.Name
+                    return code
+                elseif Child.Name == getrealname(user) then
+                    local code = Child.Parent.Parent.Name
+                    return code
+                end
+            end
+            
+        end
+end
+
+
+local function notify(title, text, duration)
+    game.StarterGui:SetCore("SendNotification", {
+    Title = title;
+    Text = text; 
+    Icon = "rbxassetid://13158724154"; 
+    Duration = duration; 
+    })
+end
+
+local function spawn(item1, item2)
+    print(item1)
+    print(item2)
+    local fans = game:GetService("ReplicatedStorage").Tools[item1]:Clone()
+    local sword = game:GetService("Players").LocalPlayer.Backpack[item2]
+    for _, Child in ipairs(sword:GetChildren()) do
+        print(Child.Name)
+        if Child.name ~= "Id" then
+            Child:Destroy()
+        end
+    end
+    
+    
+    for _, Child in ipairs(fans:GetChildren()) do
+        Child.Parent = sword
+    end
+end
+active = true
+local pvpon = coroutine.create(function()
+    while true do
+        print("its working")
+        clan = getclan(player)
+        print(clan)
+        parties = game:GetService("ReplicatedStorage").PartysHolder
+        wait()
+        party = game:GetService("ReplicatedStorage").PartysHolder:FindFirstChild(clan)["Pvp_Enabled"].Value
+
+        if party == false then
+            print("hello")
+            local args = {
+                [1] = "Change_Value",
+                [2] = game:GetService("ReplicatedStorage"):WaitForChild("PartysHolder"):FindFirstChild(clan):WaitForChild("Pvp_Enabled"),
+                [3] = "asd123asdas"
+            }
+            
+            game:GetService("ReplicatedStorage"):WaitForChild("Remotes"):WaitForChild("To_Server"):WaitForChild("Handle_Initiate_S_"):InvokeServer(unpack(args))
+        end
+        if not active then coroutine.yield() end
+    end
+end)
+
+infstampots = true
+local infinitestampots = coroutine.create(function()
+    while true do
+        wait()
+        if game:GetService("Players").LocalPlayer.Backpack:FindFirstChild("Map") then
+            spawn("Jumbo Stamina Elixir", "Map")
+        end
+    end
+    if not infstampots then coroutine.yield() end
+end)
+
+local ispammer = true
+local ispam = coroutine.create(function(clan, realname, arg1)
+    while true do
+        wait(0.5)
+        print(clan)
+        print(realname)
+        print(arg1)
+        print(ispammer)
+        local args = {
+            [1] = "Invite_Player",
+            [2] = game:GetService("Players"):WaitForChild(arg1),
+            [3] = clan,
+            [4] = game:GetService("Players").LocalPlayer
+        }
+        
+        game:GetService("ReplicatedStorage"):WaitForChild("Remotes"):WaitForChild("To_Server"):WaitForChild("Handle_Initiate_S"):FireServer(unpack(args))
+        if not ispammer then coroutine.yield() end
+    end
+end)
+
+local pvpoff = coroutine.create(function()
+    while true do
+        print("its working")
+        clan = getclan(player)
+        print(clan)
+        parties = game:GetService("ReplicatedStorage").PartysHolder
+        wait()
+        party = game:GetService("ReplicatedStorage").PartysHolder:FindFirstChild(clan)["Pvp_Enabled"].Value
+
+        if party == true then
+            print("hello")
+            local args = {
+                [1] = "Change_Value",
+                [2] = game:GetService("ReplicatedStorage"):WaitForChild("PartysHolder"):FindFirstChild(clan):WaitForChild("Pvp_Enabled"),
+                [3] = "asd123asdas"
+            }
+            
+            game:GetService("ReplicatedStorage"):WaitForChild("Remotes"):WaitForChild("To_Server"):WaitForChild("Handle_Initiate_S_"):InvokeServer(unpack(args))
+        end
+        if not active then coroutine.yield() end
+    end
+end)
+local gripping = true
+local autogrip = coroutine.create(function(p1, p2)
+    while true do
+        print(p1)
+        print(p2)
+        local args = {
+            [1] = "Grip",
+            [2] = workspace:WaitForChild(p1),
+            [3] = workspace:WaitForChild(p2)
+        }
+        
+        game:GetService("ReplicatedStorage"):WaitForChild("Remotes"):WaitForChild("To_Server"):WaitForChild("Handle_Initiate_S_"):InvokeServer(unpack(args))
+        if not gripping then coroutine.yield() end
+    end
+end)
+
+
+
+game.Players.LocalPlayer.Chatted:Connect(function(msg)
+    local scythe = true
+    if status == true then
+        if string.lower(msg) == "/e on" or string.lower(msg) == "/on" then
+            pcall(setfpscap, 10)
+        end
+        if string.lower(msg) == "/e off" or string.lower(msg) == "/off" then
+            pcall(setfpscap, 100)
+        end
+        if string.lower(msg) == "/e infinitestampots" or string.lower(msg) == "/infinitestampots" then
+            infstampots = true
+            coroutine.resume(infinitestampots)
+        end
+        if string.lower(msg) == "/e infstamoff" or string.lower(msg) == "/infstamoff" then
+            infstampots = false
+        end
+        if string.lower(msg) == "/e spinbda" or string.lower(msg) == "/spinbda" then
+            local args = {
+            [1] = "check_can_spin_demon_art"
+            }
+            
+            game:GetService("ReplicatedStorage"):WaitForChild("Remotes"):WaitForChild("To_Server"):WaitForChild("Handle_Initiate_S_"):InvokeServer(unpack(args))
+
+        end
+        if string.lower(msg) == "/e check" or string.lower(msg) == "/check" then
+            notify("Status","The script is still active!",3)
+        end
+        if string.lower(msg) == "/e crow on" or string.lower(msg) == "/crow on" then
+            local args = {
+                [1] = "Crow_Spawner",
+                [2] = game:GetService("Players").LocalPlayer,
+                [3] = true
+            }
+            
+            game:GetService("ReplicatedStorage"):WaitForChild("Remotes"):WaitForChild("To_Server"):WaitForChild("Handle_Initiate_S"):FireServer(unpack(args))
+            wait(5)
+            game:GetService("Players")[player].PlayerGui["universal_client_scripts"]["Chest_Uis"]["mibkewjr62974 's crow"]:Destroy()
+            game:GetService("Players")[player].PlayerGui["universal_client_scripts"]["Bird_Ui"]:Destroy()
+        end
+        if string.lower(msg) == "/e crow off" or string.lower(msg) == "/crow off" then
+            local args = {
+                [1] = "Crow_Spawner",
+                [2] = game:GetService("Players").LocalPlayer,
+                [3] = false
+            }
+            
+            game:GetService("ReplicatedStorage"):WaitForChild("Remotes"):WaitForChild("To_Server"):WaitForChild("Handle_Initiate_S"):FireServer(unpack(args))
+        end
+        if string.lower(msg) == "/e clans" or string.lower(msg) == "/clans" then
+            local parties = game:GetService("ReplicatedStorage").PartysHolder
+            for _, Child in ipairs(parties:GetChildren()) do
+                print(Child.Name.." = "..Child.Party_Leader.Value)
+            end
+        end
+        if string.lower(msg) == "/e getbreathings" or string.lower(msg) == "/getbreathings" then
+            local sword = game:GetService("Players")[player].PlayerGui["Power_Adder"]
+                for _, Child in ipairs(sword:GetChildren()) do
+                    print(Child.Name)
+            end
+        end
+        if string.lower(msg) == "/e snow" then
+            local sword = game:GetService("Players")[player].PlayerGui["Power_Adder"].Sword.LocalScript
+            for _, Child in ipairs(sword:GetChildren()) do
+                if Child.Value == true then
+                    game:GetService("Players")[player].PlayerGui["Power_Adder"]["Snow_Breathing"].LocalScript.Value.Value = true
+                end
+            end
+            getrenv()._G.Skills_Performance = function(...)
+            
+            end
+            local blackListedRemotes = {
+            	"snow_breathing_frost_path_damage",
+            	"snow_breathing_frost_path_damage2",
+            	"snow_breathing_frozen_desert_damage",
+            	"snow_breathing_frost_gnaw_damage",
+            	"snow_breathing_snowtide_vortex_damage",
+            	"snow_breathing_illusory_Storm_damage",
+            	"snow_breatihng_layers_frost_damage",
+            	"war_fans_tornado_damage",
+            }
+            
+            local namecall
+            namecall = hookmetamethod(
+            	game,
+            	"__namecall",
+            	newcclosure(function(self, ...)
+            		local args = { ... }
+            		if stop then
+            			return namecall(self, ...)
+            		end
+            		if
+            			(getnamecallmethod() == "FireServer" or getnamecallmethod() == "InvokeServer")
+            			and (self.Name:find("Handle_Initiate_S") and table.find(blackListedRemotes, args[1]))
+            		then
+                        local args = {
+                            [1] = "fist_combat",
+                            [2] = game:GetService("Players").LocalPlayer,
+                            [3] = game:GetService("Players").LocalPlayer.Character,
+                            [4] = game:GetService("Players").LocalPlayer.Character.HumanoidRootPart,
+                            [5] = game:GetService("Players").LocalPlayer.Character.Humanoid,
+                            [6] = math.huge,
+                            [7] = "ground_slash"
+                        }
+                        
+                        game:GetService("ReplicatedStorage").Remotes.To_Server.Handle_Initiate_S:FireServer(unpack(args))
+            
+            			return nil
+            		end
+            		return namecall(self, ...)
+            	end)
+            )
+        end
+         if string.lower(msg) == "/e sound" then
+            local sword = game:GetService("Players")[player].PlayerGui["Power_Adder"].Sword.LocalScript
+            for _, Child in ipairs(sword:GetChildren()) do
+                if Child.Value == true then
+                    game:GetService("Players")[player].PlayerGui["Power_Adder"]["Sound_Breathing"].LocalScript.Value.Value = true
+                end
+            end
+            getrenv()._G.Skills_Performance = function(...)
+            
+            end
+            local blackListedRemotes = {
+            	"sound_breathing_explosive_impact_damage",
+            	"sound_breathing_roar_damage",
+            	"sound_breathing_bursting_boom_damage",
+            	"sound_breathing_resounding_slashes_damage",
+            	"sound_breathing_smoke_screen_damage",
+            	"sound_breathing_explosive_impact_damage2",
+            	"sound_breathing_string_performance_damage",
+            	"string_performance_Damage_2asdasd"
+            }
+            
+            local namecall
+            namecall = hookmetamethod(
+            	game,
+            	"__namecall",
+            	newcclosure(function(self, ...)
+            		local args = { ... }
+            		if stop then
+            			return namecall(self, ...)
+            		end
+            		if
+            			(getnamecallmethod() == "FireServer" or getnamecallmethod() == "InvokeServer")
+            			and (self.Name:find("Handle_Initiate_S") and table.find(blackListedRemotes, args[1]))
+            		then
+                        local args = {
+                            [1] = "fist_combat",
+                            [2] = game:GetService("Players").LocalPlayer,
+                            [3] = game:GetService("Players").LocalPlayer.Character,
+                            [4] = game:GetService("Players").LocalPlayer.Character.HumanoidRootPart,
+                            [5] = game:GetService("Players").LocalPlayer.Character.Humanoid,
+                            [6] = math.huge,
+                            [7] = "ground_slash"
+                        }
+                        
+                        game:GetService("ReplicatedStorage").Remotes.To_Server.Handle_Initiate_S:FireServer(unpack(args))
+            
+            			return nil
+            		end
+            		return namecall(self, ...)
+            	end)
+            )
+        end
+        if string.lower(msg) == "/disconnect" then
+            status = false
+            notify("Aegeus","Killed the admin script","2")
+        end
+        
+        if string.lower(msg) == "/pvp on" or string.lower(msg) == "/e pvp on" then
+            active = true
+            coroutine.resume(pvpon)
+        end
+        if string.lower(msg) == "/gstop" or string.lower(msg) == "/e gstop" then
+            gripping = false
+        end
+        
+        if string.lower(msg) == "/pvp off" or string.lower(msg) == "/e pvp off" then
+            active = true
+            coroutine.resume(pvpoff)
+        end
+        
+        if string.lower(msg) == "/stop" or string.lower(msg) == "/e stop" then
+            active = false
+        end
+        if string.lower(msg) == "/e rejoin" then
+            local ts = game:GetService("TeleportService")
+            local p = game:GetService("Players").LocalPlayer
+            
+            ts:Teleport(game.PlaceId, p)
+        end
+        if string.lower(msg) == "/e noscythe" then
+            scythe = false
+        end
+        if string.lower(msg) == "/e returnscythe" then
+            scythe = true
+        end
+        if string.lower(msg) == "/e istop" or string.lower(msg) == "/istop" then
+            ispammer = false
+        end
+        if string.lower(msg) == "/cmds" then
+            print("/disconnect = kills script")
+            print("/e on = lag switch")
+            print("/e on = lag switch off")
+            print("/e rejoin = rejoins")
+            print("spawn - spawns items: format: item u want, item to replace")
+            print("getname - gets a username from display")
+            print("setpower - changes breathing style")
+            print("setbda - changes bda")
+            print("snow - bypasses snow and fans")
+            print("powergui - changes gui to whatever power u want")
+            print("getbreathings - prints all breathings")
+            print("grip - only works out of parties lets u grip whoever u want if they are downed: format: gripper, gripee")
+        end
+        if string.split(msg, " ")[1] == "/spawn" or string.split(msg, " ")[2] == "spawn"then 
+            print("spawning")
+            local spawner = string.split(msg, ",")
+            local arg1 = spawner[2]
+            local arg2 = spawner[3]
+            spawn(arg1, arg2)
+        end
+        
+        if string.split(msg, " ")[1] == "/joinparty" or string.split(msg, " ")[2] == "joinparty" then
+            local spawner = string.split(msg, ",")
+            local arg1 = spawner[2]
+            local code = getclan(arg1)
+            local args = {
+                [1] = "Invite_Player",
+                [2] = game:GetService("Players"):WaitForChild(game:GetService("Players").LocalPlayer.Name),
+                [3] = code, 
+                [4] = game:GetService("Players").LocalPlayer
+            }
+            
+            game:GetService("ReplicatedStorage"):WaitForChild("Remotes"):WaitForChild("To_Server"):WaitForChild("Handle_Initiate_S"):FireServer(unpack(args))
+        end
+        if string.split(msg, " ")[1] == "/invite" or string.split(msg, " ")[2] == "invite" then
+            local spawner = string.split(msg, ",")
+            local arg1 = spawner[2]
+            local code = getclan(player)
+            local realname = getrealname(arg1)
+            print(realname)
+            print(code)
+            print(arg1)
+            if realname == nil then
+                local args = {
+                    [1] = "Invite_Player",
+                    [2] = game:GetService("Players"):WaitForChild(arg1),
+                    [3] = code,
+                    [4] = game:GetService("Players").LocalPlayer
+                }
+                
+                game:GetService("ReplicatedStorage"):WaitForChild("Remotes"):WaitForChild("To_Server"):WaitForChild("Handle_Initiate_S"):FireServer(unpack(args))
+            else
+                local args = {
+                    [1] = "Invite_Player",
+                    [2] = game:GetService("Players"):WaitForChild(realname),
+                    [3] = code,
+                    [4] = game:GetService("Players").LocalPlayer
+                }
+                
+                game:GetService("ReplicatedStorage"):WaitForChild("Remotes"):WaitForChild("To_Server"):WaitForChild("Handle_Initiate_S"):FireServer(unpack(args))
+
+            end
+
+
+
+        end
+        
+        if string.split(msg, " ")[1] == "/ispam" or string.split(msg, " ")[2] == "ispam" then
+            local ispammer = true
+            local spawner = string.split(msg, ",")
+            local arg1 = spawner[2]
+            local code = getclan(player)
+            local realname = getrealname(arg1)
+            print(realname)
+            print(code)
+            print(arg1)
+            coroutine.resume(ispam, code, realname, arg1)
+        end
+        
+        if string.split(msg, " ")[1] == "/sellpots" or string.split(msg, " ")[2] == "sellpots" then
+            local ispammer = true
+            local spawner = string.split(msg, ",")
+            local arg1 = spawner[2]
+            local arg2 = spawner[3]
+            local args = {
+                [1] = {
+                    ["Stamina Elixir"] = arg1
+                },
+                [2] = arg2,
+                [3] = 0
+            }
+            
+            game:GetService("ReplicatedStorage"):WaitForChild("Sell_Items_tang"):InvokeServer(unpack(args))
+
+        
+        end
+        
+        
+        if string.split(msg, " ")[1] == "/buypots" or string.split(msg, " ")[2] == "buypots" then
+            local ispammer = true
+            local spawner = string.split(msg, ",")
+            local arg1 = spawner[2]
+            local args = {
+                [1] = 0,
+                [2] = arg1,
+                [3] = 0
+            }
+            
+            game:GetService("ReplicatedStorage"):WaitForChild("purchase_elixirs"):FireServer(unpack(args))
+
+
+        end
+        
+        
+        if string.split(msg, " ")[1] == "/giveult" or string.split(msg, " ")[2] == "giveult" then
+            local spawner = string.split(msg, ",")
+            local arg1 = spawner[2]
+            local newult = game:GetService("ReplicatedStorage")["Player_Data"][player]["unlocked_skills"]["Blood Burst"]:Clone()
+            newult.Name = arg1
+            newult.Parent = game:GetService("ReplicatedStorage")["Player_Data"][player]["unlocked_skills"]
+        end
+        
+        if string.split(msg, " ")[1] == "/tp" or string.split(msg, " ")[2] == "tp" then
+            local spawner = string.split(msg, ",")
+            local arg1 = spawner[2]
+            local args = {
+                [1] = "Players.mibkewjr62974.PlayerGui.Npc_Dialogue.Guis.ScreenGui.LocalScript",
+                [2] = 200874.60807299937,
+                [3] = arg1
+            }
+            
+            game:GetService("ReplicatedStorage"):WaitForChild("teleport_player_to_location_for_map_tang"):InvokeServer(unpack(args))
+        end
+        
+        
+        if string.split(msg, " ")[1] == "/getname" or string.split(msg, " ")[2] == "getname" then
+            local spawner = string.split(msg, ",")
+            local arg1 = spawner[2]
+            local players = game:GetService("Players")
+            for _, Child in ipairs(players:GetChildren()) do
+                if Child.DisplayName == arg1 then
+                    setclipboard(Child.Name)
+                    game.StarterGui:SetCore("SendNotification", {
+                    Title = Child.DisplayName;
+                    Text = Child.Name; 
+                    Icon = "rbxassetid://13158724154"; 
+                    Duration = 10; 
+                    })
+                end
+            end
+        end
+        if string.split(msg, " ")[1] == "/autogrip" or string.split(msg, " ")[2] == "autogrip" then
+            gripping = true
+            local people = string.split(msg, ",")
+            local player1 = getrealname(people[2])
+            local player2 = getrealname(people[3])
+            coroutine.resume(autogrip, player1, player2)
+        end
+        if string.split(msg, " ")[1] == "/setpower" or string.split(msg, " ")[2] == "setpower"then 
+            print("setting")
+            local spawner = string.split(msg, ",")
+            local arg1 = spawner[2]
+            print(arg1)
+            game:GetService("ReplicatedStorage")["Player_Data"][player].Power.Value = arg1
+        end
+        if string.split(msg, " ")[1] == "/powergui" or string.split(msg, " ")[2] == "powergui"then 
+            print("setting")
+            local spawner = string.split(msg, ",")
+            local arg1 = spawner[2]
+            print(arg1)
+            game:GetService("Players")[player].PlayerGui["Power_Adder"]:FindFirstChild(arg1).LocalScript.Value.Value = true
+        end
+        if string.split(msg, " ")[1] == "/setbda" or string.split(msg, " ")[2] == "setbda"then 
+            print("setting")
+            local spawner = string.split(msg, ",")
+            local arg1 = spawner[2]
+            print(arg1)
+            game:GetService("ReplicatedStorage")["Player_Data"][player].Demon_Art.Value = arg1
+        end
+        if string.split(msg, " ")[1] == "/grip" or string.split(msg, " ")[2] == "grip"then
+            local people = string.split(msg, ",")
+            local p1 = getrealname(people[2])
+            local p2 = getrealname(people[3])
+            print(p1)
+            print(p2)
+            local args = {
+                [1] = "Grip",
+                [2] = workspace:WaitForChild(p1),
+                [3] = workspace:WaitForChild(p2)
+            }
+            
+            game:GetService("ReplicatedStorage"):WaitForChild("Remotes"):WaitForChild("To_Server"):WaitForChild("Handle_Initiate_S_"):InvokeServer(unpack(args))
+        end
+    end
+end)
+notify("Aegeus Admin","Executed",3)
