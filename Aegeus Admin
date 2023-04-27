@@ -1549,57 +1549,7 @@ do
 																	while true do
 																		if (((159 + 241) < 1062) and (0 == v210)) then
 																			v211 = v89[2 + 0];
-																			v87[v211] = v87[v211](v13(v87, v211 + 1 + 0, v89[2 + 1]));
-																			break;
-																		end
-																	end
-																	break;
-																end
-																if (((5710 - (194 + (2540 - (397 + 934)))) < (252 + 4659)) and (v209 == (0 - 0))) then
-																	v210 = (2323 - (388 + 188)) - (774 + 973);
-																	v211 = nil;
-																	v209 = 138 - (44 + 93);
-																end
-															end
-															break;
-														end
-													end
-												end
-												v69 = v69 + 1 + 0;
-												break;
-											end
-											if (((0 - 0) == v95) or ((5670 - (1314 + 577)) < (904 - 314))) then
-												local v108 = 0 - 0;
-												while true do
-													if ((v108 == (1 + 0)) or ((719 - ((1055 - 661) + 13)) > ((3997 + 1628) - (285 + 1573)))) then
-														v95 = 1 + 0;
-														break;
-													end
-													if (((110 + 2326) == 2436) and (((0 - 0) + 0) == v108)) then
-														v89 = v81[v69];
-														v90 = v89[1 + 0];
-														v108 = 1;
-													end
-												end
-											end
-										end
-										break;
-									end
-								end
-							end
-						end
-						A, B = v28(v11(v73));
-						if not A[1] then
-							local v91 = v31[4][v69] or "?";
-							error("Script error at [" .. v91 .. "]:" .. A[2]);
-						else
-							return v13(A, 2, B);
-						end
-					end;
-				end
-				return v30(v29(), {}, v17)(...);
-			end
-			if (0 == v18) then
+																			v87[v211] = v87[
 				v19 = 1;
 				v20 = nil;
 				v16 = v4(v3(v16, 5), "..", function(v34)
